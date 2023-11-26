@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Box, Button, TextField, styled } from "@mui/material";
+import { Box, Button, TextField, Typography, styled } from "@mui/material";
 import * as io from "socket.io-client";
 
 const socket = io.connect("http://localhost:4000");
@@ -11,7 +11,7 @@ const LoginPage = () => {
 
   const joinRoom = () => {
     if (username !== "" && roomId !== "") {
-      socket.emit("join_room");
+      socket.emit("join_room", roomId);
     }
   };
 
@@ -29,7 +29,9 @@ const LoginPage = () => {
         focused
         onChange={(event: InputEvent) => setRoomId(event.target.value)}
       />
-      <Button variant="contained">Join Room</Button>
+      <Button variant="contained" onClick={joinRoom}>
+        Join Room
+      </Button>
     </StyledBox>
   );
 };
@@ -46,7 +48,10 @@ const StyledBox = styled(Box)({
   borderRadius: "7px",
   margin: "0 auto",
   padding: "25px",
-  "& > *": {
-    margin: "15px",
+  ".MuiTextField-root": {
+    margin: "15px 0",
+  },
+  "& > :last-child": {
+    marginTop: "15px",
   },
 });
