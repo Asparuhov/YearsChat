@@ -6,7 +6,7 @@ const socket = io.connect("http://localhost:4000");
 const ChatPage = () => {
   return (
     <div>
-      <input placeholder="...message" />
+      <input type='text' placeholder="Username" />
       <button>Send</button>
     </div>
   );
