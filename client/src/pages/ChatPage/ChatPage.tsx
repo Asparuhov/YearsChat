@@ -29,9 +29,9 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
         username,
         message,
         time:
-          new Date(Date.now()).getHours() +
+          new Date().getHours().toString().padStart(2, "0") +
           ":" +
-          new Date(Date.now()).getMinutes(),
+          new Date().getMinutes().toString().padStart(2, "0"),
       };
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
@@ -53,6 +53,8 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
             <Message
               sender={username === message.username ? "you" : "friend"}
               message={message.message}
+              username={message.username}
+              time={message.time}
             />
           );
         })}
