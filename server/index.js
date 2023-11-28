@@ -20,8 +20,13 @@ io.on("connection", (socket) => {
 
   socket.on("join_room", (data) => {
     socket.join(data);
-    console.log(data);
+    console.log("user joined room " + data);
   });
+   
+  socket.on("send_message", (data) =>{
+   socket.to(data.roomId).emit("recieve_message", data)
+   console.log("recieving ");
+  })
 
   socket.on("disconnect", () => {
     console.log(`User Disconnected ${socket.id}`);
