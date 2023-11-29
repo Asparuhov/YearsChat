@@ -11,10 +11,11 @@ const App: React.FC = () => {
   const roomId = localStorage.getItem("roomId");
 
   useEffect(() => {
-    if (!!username && roomId) {
+    if (!!username && !!roomId) {
       setShowChat(true);
+      socket.emit("join_room", roomId);
     }
-  }, [roomId, username]);
+  }, []);
 
   return showChat && username && roomId ? (
     <ChatPage username={username} roomId={roomId} socket={socket} />

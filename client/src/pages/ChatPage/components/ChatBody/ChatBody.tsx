@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { Grid, styled } from "@mui/material";
 
 interface IProps {
@@ -6,8 +6,16 @@ interface IProps {
 }
 
 const ChatBody: React.FC<IProps> = ({ children }) => {
+  const chatBodyRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (chatBodyRef.current) {
+      chatBodyRef.current.scrollTop = chatBodyRef.current.scrollHeight;
+    }
+  }, [children]);
+
   return (
-    <StyledChatBody item xs={12}>
+    <StyledChatBody ref={chatBodyRef} item xs={12}>
       {children}
     </StyledChatBody>
   );

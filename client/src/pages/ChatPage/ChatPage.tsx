@@ -5,6 +5,7 @@ import ChatBody from "./components/ChatBody/ChatBody";
 import ChatFooter from "./components/ChatFooter";
 import Message from "./components/ChatBody/Message";
 import { Socket } from "socket.io-client";
+import { v4 as uuidv4 } from "uuid";
 
 interface IChatPageProps {
   username: string;
@@ -13,6 +14,7 @@ interface IChatPageProps {
 }
 
 interface IMessageData {
+  id: string;
   roomId: string;
   username: string;
   message: string;
@@ -25,6 +27,7 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
   const sendMessage = async (message: string) => {
     if (message !== "") {
       const messageData: IMessageData = {
+        id: uuidv4(),
         roomId,
         username,
         message,
@@ -43,7 +46,8 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-
+ console.log(messageList);
+ 
   return (
     <StyledChatComponent container spacing={2}>
       <ChatHeader roomId={roomId} />

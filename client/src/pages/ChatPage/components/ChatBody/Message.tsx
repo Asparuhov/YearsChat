@@ -1,5 +1,6 @@
 import { Box, Typography, styled } from "@mui/material";
 import React from "react";
+import EditIcon from "@mui/icons-material/Edit";
 
 interface IMessageProps {
   message: string;
@@ -38,17 +39,16 @@ const Message: React.FC<IMessageProps> = ({
       >
         {message}
       </StyledMessage>
-      <Typography
+      <StyledEditAndTime
         sx={{
           alignSelf: sender === "friend" ? "flex-start" : "flex-end",
-          color: "grey",
-          fontSize: 11,
           marginRight: sender === "you" ? 1.5 : 0,
           marginLeft: sender === "friend" ? 1.5 : 0,
         }}
       >
+        <StyledEditIcon />
         {time}
-      </Typography>
+      </StyledEditAndTime>
     </StyledMessageContainer>
   );
 };
@@ -71,3 +71,16 @@ const StyledMessage = styled(Box)(({ theme }) => ({
   margin: "5px",
   color: "white",
 }));
+
+const StyledEditIcon = styled(EditIcon)({
+  color: "grey",
+  width: 18,
+});
+
+const StyledEditAndTime = styled(Typography)({
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  color: "grey",
+  fontSize: 11,
+});
