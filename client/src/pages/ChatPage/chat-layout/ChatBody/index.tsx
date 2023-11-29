@@ -21,23 +21,28 @@ export const ChatBody: React.FC<IProps> = ({ children }) => {
   );
 };
 
-const StyledChatBody = styled(Grid)({
-  height: 700,
+const StyledChatBody = styled(Grid)(({ theme }) => ({
+  height: 470,
+  border: "1px solid rgb(133, 133, 133)",
   overflowY: "auto",
   overflowX: "hidden",
   paddingLeft: "10px !important",
   paddingRight: "10px !important",
+  marginTop: 10,
+  zIndex: 2,
   "&::-webkit-scrollbar": {
-    width: "12px",
+    width: "5px",
+    zIndex: 1,
   },
   "&::-webkit-scrollbar-track": {
     background: "#f1f1f1",
   },
   "&::-webkit-scrollbar-thumb": {
     background: "#888",
-    borderRadius: "10px",
   },
   "&::-webkit-scrollbar-thumb:hover": {
     background: "#555",
   },
-});
+  scrollbarWidth: "thin",
+  scrollbarColor: "#888 #f1f1f1",
+}));

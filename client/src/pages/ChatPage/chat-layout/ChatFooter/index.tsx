@@ -18,14 +18,14 @@ export const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
   return (
     <StyledChatFooter item xs={12}>
       <TextField
-        sx={{ width: "80%" }}
+        sx={{ width: "75%" }}
         value={currentMessage}
         onChange={(event) => setCurrentMessage(event.target.value)}
         onKeyDown={handleKeyDown}
       />
       <Button
         variant="contained"
-        sx={{ width: 75, marginRight: 1, height: 55 }}
+        sx={{ width: 75, height: 55 }}
         onClick={() => {
           sendMessage(currentMessage);
           setCurrentMessage("");
@@ -38,9 +38,9 @@ export const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
 };
 
 const StyledChatFooter = styled(Grid)({
-  maxWidth: 500,
+  maxWidth: 570,
   height: 85,
-  borderTop: "1px solid rgb(133, 133, 133)",
   display: "flex",
   justifyContent: "space-between",
+  paddingLeft: "0 !important",
 });

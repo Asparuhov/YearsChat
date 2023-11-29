@@ -1,14 +1,9 @@
-import {
-  Box,
-  Button,
-  Paper,
-  Popover,
-  styled,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { useMessageContext } from "../../../../../MessagesContext";
-import React, { useState } from "react";
+import { Button, Paper, Popover, styled } from "@mui/material";
+import { useChatContext } from "../../../../../ChatContext";
+import React, { useEffect, useState } from "react";
+import { Main } from "./EditParts/Main";
+import { Edit } from "./EditParts/Edit";
+import { Delete } from "./EditParts/Delete";
 
 interface IEditPopperProps {
   open: boolean;
@@ -18,8 +13,6 @@ interface IEditPopperProps {
   message: string;
 }
 
-type ViewTypes = "edit" | "delete" | "default";
-
 export const EditPopper: React.FC<IEditPopperProps> = ({
   open,
   handlePopoverClose,
@@ -27,18 +20,17 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
   messageId,
   message,
 }) => {
-  const [currentView, setCurrentView] = useState<ViewTypes>("default");
-  const { setMessageList, socket } = useMessageContext();
-  const roomId = localStorage.getItem("roomId");
+  const [editValue, setEditValue] = useState<string>("");
+  const [error, setError] = useState<string>("");
+  const { messageList, setMessageList, socket, view, setView } =
+    useChatContext();
 
-  const switchView = (type: ViewTypes) => {
-    setCurrentView(type);
-  };
+  const roomId = localStorage.getItem("roomId");
 
   const resetView = () => {
     handlePopoverClose();
     setTimeout(() => {
-      switchView("default");
+      setView("default");
     }, 200);
   };
 
@@ -61,80 +53,69 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
       }
     });
 
-    handlePopoverClose();
+    resetView();
   };
 
+  const editMessage = async () => {
+    await socket.emit("edit_message", {
+      messageId,
+      roomId,
+      editedMessage: editValue,
+    });
+
+    setMessageList((prevMessageList) => {
+      const messageIndex = prevMessageList.findIndex(
+        (msg) => msg.id === messageId
+      );
+
+      if (messageIndex !== -1) {
+        const updatedMessageList = [
+          ...prevMessageList.slice(0, messageIndex),
+          {
+            ...prevMessageList[messageIndex],
+            message: editValue,
+          },
+          ...prevMessageList.slice(messageIndex + 1),
+        ];
+        return updatedMessageList;
+      } else {
+        return prevMessageList;
+      }
+    });
+    resetView();
+  };
+
+  const handleEditInputChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setEditValue(event.target.value);
+  };
+
+  useEffect(() => {
+    const messageToUpdate = messageList.find((msg) => msg.id === messageId);
+
+    if (messageToUpdate) {
+      setEditValue(messageToUpdate.message);
+    }
+  }, [messageList, messageId]);
+
   const renderContent = () => {
-    switch (currentView) {
+    switch (view) {
       case "edit":
         return (
-          <Box p={2} display="flex" flexDirection="column">
-            <TextField
-              label="Edit Message"
-              variant="outlined"
-              fullWidth
-              sx={{ marginBottom: 1 }}
-            />
-            <Box p={2} display="flex" justifyContent="space-between" gap={2}>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => switchView("default")}
-                sx={{ width: "calc(50% - 4px)" }}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  handlePopoverClose();
-                }}
-                sx={{ width: "calc(50% - 4px)" }}
-              >
-                Save
-              </Button>
-            </Box>
-          </Box>
+          <Edit
+            editValue={editValue}
+            handleEditInputChange={handleEditInputChange}
+            error={error}
+            message={message}
+            setError={setError}
+            editMessage={editMessage}
+          />
         );
       case "delete":
-        return (
-          <Box p={2} display="flex" flexDirection="column">
-            <Typography variant="body1">
-              Are you sure you want to delete?
-            </Typography>
-            <Button
-              variant="contained"
-              onClick={() => switchView("default")}
-              sx={{ marginBottom: 2, marginTop: 2 }}
-            >
-              Cancel
-            </Button>
-            <Button variant="contained" color="error" onClick={deleteMessage}>
-              Confirm
-            </Button>
-          </Box>
-        );
+        return <Delete deleteMessage={deleteMessage} />;
       default:
-        return (
-          <Box p={2} display="flex" flexDirection="column">
-            <StyledButton
-              variant="contained"
-              color="primary"
-              onClick={() => switchView("edit")}
-            >
-              Edit
-            </StyledButton>
-            <StyledButton
-              variant="contained"
-              color="secondary"
-              style={{ background: "red" }}
-              onClick={() => switchView("delete")}
-            >
-              Delete
-            </StyledButton>
-          </Box>
-        );
+        return <Main />;
     }
   };
 

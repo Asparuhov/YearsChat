@@ -3,10 +3,10 @@ import { Grid, styled } from "@mui/material";
 import { ChatHeader } from "./chat-layout/ChatHeader";
 import { ChatBody } from "./chat-layout/ChatBody";
 import { ChatFooter } from "./chat-layout/ChatFooter";
-import { Message } from "./chat-layout/ChatBody/Messages";
+import { Message } from "./chat-layout/ChatBody/Message";
 import { v4 as uuidv4 } from "uuid";
-import { useMessageContext } from "../../MessagesContext";
-import { IMessageData } from "../../MessagesContext";
+import { useChatContext } from "../../ChatContext";
+import { IMessageData } from "../../ChatContext";
 
 interface IChatPageProps {
   username: string;
@@ -14,7 +14,7 @@ interface IChatPageProps {
 }
 
 export const ChatPage: React.FC<IChatPageProps> = ({ username, roomId }) => {
-  const { messageList, setMessageList, socket } = useMessageContext();
+  const { messageList, setMessageList, socket } = useChatContext();
 
   const formattedTime: string =
     new Date().getHours().toString().padStart(2, "0") +
@@ -53,12 +53,37 @@ export const ChatPage: React.FC<IChatPageProps> = ({ username, roomId }) => {
     });
   };
 
+  const editMessage = (editedMessage: string, messageId: string) => {
+    setMessageList((prevMessageList) => {
+      const messageIndex = prevMessageList.findIndex(
+        (msg) => msg.id === messageId
+      );
+
+      if (messageIndex !== -1) {
+        const updatedMessageList = [
+          ...prevMessageList.slice(0, messageIndex),
+          {
+            ...prevMessageList[messageIndex],
+            message: editedMessage,
+          },
+          ...prevMessageList.slice(messageIndex + 1),
+        ];
+        return updatedMessageList;
+      } else {
+        return prevMessageList;
+      }
+    });
+  };
+
   useEffect(() => {
     socket.on("recieve_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
     socket.on("delete", (data) => {
       deleteMessage(data.messageId);
+    });
+    socket.on("edit", (data) => {
+      editMessage(data.editedMessage, data.messageId);
     });
   }, [socket, setMessageList]);
 
@@ -83,8 +108,7 @@ export const ChatPage: React.FC<IChatPageProps> = ({ username, roomId }) => {
   );
 };
 
-const StyledChatComponent = styled(Grid)({
-  maxWidth: 500,
+const StyledChatComponent = styled(Grid)(({ theme }) => ({
+  maxWidth: 355,
   margin: "0 auto",
-  border: "1px solid rgb(133, 133, 133)",
-});
+}));

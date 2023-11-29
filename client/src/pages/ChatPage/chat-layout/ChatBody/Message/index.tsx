@@ -45,7 +45,7 @@ export const Message: React.FC<IMessageProps> = ({
       </Typography>
       <StyledMessage
         sx={{
-          backgroundColor: sender === "friend" ? "#daa520" : "blue",
+          backgroundColor: sender === "friend" ? "#daa520" : "#1565c0",
           alignSelf: sender === "friend" ? "flex-start" : "flex-end",
           wordWrap: "break-word",
           wordBreak: "break-all",
@@ -89,7 +89,7 @@ const StyledMessageContainer = styled(Box)({
 
 const StyledMessage = styled(Box)(({ theme }) => ({
   borderRadius: 15,
-  fontSize: 23,
+  fontSize: 18,
   display: "inline-block",
   padding: theme.spacing(1, 2),
   margin: "5px",
