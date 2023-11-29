@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Grid, styled } from "@mui/material";
-import ChatHeader from "./components/ChatHeader";
-import ChatBody from "./components/ChatBody/ChatBody";
-import ChatFooter from "./components/ChatFooter";
-import Message from "./components/ChatBody/Message";
-import { Socket } from "socket.io-client";
+import { ChatHeader } from "./chat-layout/ChatHeader";
+import { ChatBody } from "./chat-layout/ChatBody";
+import { ChatFooter } from "./chat-layout/ChatFooter";
+import { Message } from "./chat-layout/ChatBody/Messages";
 import { v4 as uuidv4 } from "uuid";
+import { useMessageContext } from "../../MessagesContext";
+import { IMessageData } from "../../MessagesContext";
 
 interface IChatPageProps {
   username: string;
   roomId: string;
-  socket: Socket;
 }
 
-interface IMessageData {
-  id: string;
-  roomId: string;
-  username: string;
-  message: string;
-  time: string;
-}
+export const ChatPage: React.FC<IChatPageProps> = ({ username, roomId }) => {
+  const { messageList, setMessageList, socket } = useMessageContext();
 
-const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
-  const [messageList, setMessageList] = useState<Array<IMessageData>>([]);
+  const formattedTime: string =
+    new Date().getHours().toString().padStart(2, "0") +
+    ":" +
+    new Date().getMinutes().toString().padStart(2, "0");
 
   const sendMessage = async (message: string) => {
     if (message !== "") {
@@ -31,10 +28,7 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
         roomId,
         username,
         message,
-        time:
-          new Date().getHours().toString().padStart(2, "0") +
-          ":" +
-          new Date().getMinutes().toString().padStart(2, "0"),
+        time: formattedTime,
       };
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
@@ -45,9 +39,8 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
     socket.on("recieve_message", (data) => {
       setMessageList((list) => [...list, data]);
     });
-  }, [socket]);
- console.log(messageList);
- 
+  }, [socket, setMessageList]);
+
   return (
     <StyledChatComponent container spacing={2}>
       <ChatHeader roomId={roomId} />
@@ -55,6 +48,7 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
         {[...new Set(messageList)].map((message) => {
           return (
             <Message
+              id={message.id}
               sender={username === message.username ? "you" : "friend"}
               message={message.message}
               username={message.username}
@@ -67,8 +61,6 @@ const ChatPage: React.FC<IChatPageProps> = ({ username, roomId, socket }) => {
     </StyledChatComponent>
   );
 };
-
-export default ChatPage;
 
 const StyledChatComponent = styled(Grid)({
   maxWidth: 500,

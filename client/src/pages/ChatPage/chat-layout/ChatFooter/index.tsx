@@ -5,7 +5,7 @@ interface IChatFooterProps {
   sendMessage: (message: string) => void;
 }
 
-const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
+export const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
   const [currentMessage, setCurrentMessage] = useState<string>("");
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
@@ -36,8 +36,6 @@ const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
     </StyledChatFooter>
   );
 };
-
-export default ChatFooter;
 
 const StyledChatFooter = styled(Grid)({
   maxWidth: 500,

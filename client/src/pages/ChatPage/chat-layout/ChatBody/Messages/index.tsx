@@ -1,20 +1,35 @@
 import { Box, Typography, styled } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
+import { EditPopper } from "../EditPopper";
 
 interface IMessageProps {
+  id: string;
   message: string;
   sender: "you" | "friend";
   username: string;
   time: string;
 }
 
-const Message: React.FC<IMessageProps> = ({
+export const Message: React.FC<IMessageProps> = ({
+  id,
   message,
   sender,
   username,
   time,
 }) => {
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const handleEditIconClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    setPopoverOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverOpen(false);
+  };
+
   return (
     <StyledMessageContainer>
       <Typography
@@ -46,14 +61,23 @@ const Message: React.FC<IMessageProps> = ({
           marginLeft: sender === "friend" ? 1.5 : 0,
         }}
       >
-        <StyledEditIcon />
+        {sender === "you" && (
+          <div onClick={handleEditIconClick}>
+            <StyledEditIcon />
+          </div>
+        )}
         {time}
       </StyledEditAndTime>
+      <EditPopper
+        open={isPopoverOpen}
+        handlePopoverClose={handlePopoverClose}
+        anchorEl={anchorEl}
+        messageId={id}
+        message={message}
+      />
     </StyledMessageContainer>
   );
 };
-
-export default Message;
 
 const StyledMessageContainer = styled(Box)({
   display: "flex",
@@ -75,6 +99,9 @@ const StyledMessage = styled(Box)(({ theme }) => ({
 const StyledEditIcon = styled(EditIcon)({
   color: "grey",
   width: 18,
+  "&:hover": {
+    cursor: "pointer",
+  },
 });
 
 const StyledEditAndTime = styled(Typography)({

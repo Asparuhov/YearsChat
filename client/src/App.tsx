@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
-import LoginPage from "./pages/LoginPage/LoginPage";
-import ChatPage from "./pages/ChatPage/ChatPage";
-import * as io from "socket.io-client";
-
-const socket = io.connect("http://localhost:4000");
-
+import { LoginPage } from "./pages/LoginPage";
+import { ChatPage } from "./pages/ChatPage";
+import { useMessageContext } from "./MessagesContext";
 const App: React.FC = () => {
   const [showChat, setShowChat] = useState<boolean>(false);
   const username = localStorage.getItem("username");
   const roomId = localStorage.getItem("roomId");
-
+  const { socket } = useMessageContext();
+  
   useEffect(() => {
     if (!!username && !!roomId) {
       setShowChat(true);
@@ -18,9 +16,9 @@ const App: React.FC = () => {
   }, []);
 
   return showChat && username && roomId ? (
-    <ChatPage username={username} roomId={roomId} socket={socket} />
+    <ChatPage username={username} roomId={roomId} />
   ) : (
-    <LoginPage socket={socket} setShowChat={setShowChat} />
+    <LoginPage setShowChat={setShowChat} />
   );
 };
 

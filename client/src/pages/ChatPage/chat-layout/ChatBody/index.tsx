@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { ReactNode, useEffect, useRef } from "react";
 import { Grid, styled } from "@mui/material";
 
 interface IProps {
-  children: any;
+  children: ReactNode;
 }
 
-const ChatBody: React.FC<IProps> = ({ children }) => {
+export const ChatBody: React.FC<IProps> = ({ children }) => {
   const chatBodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,8 +20,6 @@ const ChatBody: React.FC<IProps> = ({ children }) => {
     </StyledChatBody>
   );
 };
-
-export default ChatBody;
 
 const StyledChatBody = styled(Grid)({
   height: 700,

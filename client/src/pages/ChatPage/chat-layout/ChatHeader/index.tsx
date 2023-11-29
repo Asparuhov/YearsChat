@@ -5,7 +5,7 @@ interface IProps {
   roomId: string;
 }
 
-const ChatHeader: React.FC<IProps> = ({ roomId }) => {
+export const ChatHeader: React.FC<IProps> = ({ roomId }) => {
   return (
     <StyledChatHeader item xs={12}>
       <Typography
@@ -16,8 +16,6 @@ const ChatHeader: React.FC<IProps> = ({ roomId }) => {
     </StyledChatHeader>
   );
 };
-
-export default ChatHeader;
 
 const StyledChatHeader = styled(Grid)({
   maxWidth: 500,

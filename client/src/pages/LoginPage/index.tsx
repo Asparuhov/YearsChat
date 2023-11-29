@@ -1,26 +1,24 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useHistory for redirection
 import { Box, Button, TextField, styled } from "@mui/material";
-import { Socket } from "socket.io-client";
-
+import { useMessageContext } from "../../MessagesContext";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 
 interface ILoginPageProps {
-  socket: Socket;
   setShowChat: (value: boolean) => void;
 }
 
-const LoginPage: React.FC<ILoginPageProps> = ({ socket, setShowChat }) => {
+export const LoginPage: React.FC<ILoginPageProps> = ({ setShowChat }) => {
   const [username, setUsername] = useState<string>("");
   const [roomId, setRoomId] = useState<string>("");
+  const { socket } = useMessageContext();
 
   const joinRoom = () => {
     if (username !== "" && roomId !== "") {
       localStorage.setItem("username", username);
       localStorage.setItem("roomId", roomId);
       socket.emit("join_room", roomId);
-      setShowChat(true)
+      setShowChat(true);
     }
   };
 
@@ -40,14 +38,12 @@ const LoginPage: React.FC<ILoginPageProps> = ({ socket, setShowChat }) => {
         value={roomId}
         onChange={(event: InputEvent) => setRoomId(event.target.value)}
       />
-      <Button variant="contained" sx={{marginBottom: 2}} onClick={joinRoom} >
+      <Button variant="contained" sx={{ marginBottom: 2 }} onClick={joinRoom}>
         Join Room
       </Button>
     </StyledBox>
   );
 };
-
-export default LoginPage;
 
 const StyledBox = styled(Box)({
   display: "flex",
