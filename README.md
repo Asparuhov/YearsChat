@@ -14,7 +14,7 @@ This will install the necessary dependencies for both the server and client.
 
 **Running Locally**
 
-Open different browsers with varying caching (normal, incognito windows, etc.).
+Open different 2 or more browsers with different cache (incognito), so the localStorage doesn't sync.
 Start the server:
 ```
 cd server
