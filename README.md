@@ -1,4 +1,5 @@
 **Realtime Chat Application**
+
 This repository contains a simple realtime chat application built with React, Node.js, Express, and Socket.io. Users can join chat rooms, exchange messages, and even edit or delete their messages.
 
 Getting Started
