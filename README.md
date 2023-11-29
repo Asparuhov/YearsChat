@@ -36,6 +36,7 @@ npm start
 6. Users can edit and delete messages, view the sender, and timestamp.
 7. Edit form has validation (edited message must be different and not empty).
 8. Login form has validators (name <= 10 characters, room ID <= 5 characters).
+9. You can send messages by clicking the Enter button (just like the real chat apps)
 
 **Technologies Used**
 Frontend:
