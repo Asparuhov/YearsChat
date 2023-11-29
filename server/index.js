@@ -16,17 +16,17 @@ const io = new Server(server, {
 });
 
 io.on("connection", (socket) => {
-  console.log(`User Connected ${socket.id}`);
-
   socket.on("join_room", (data) => {
     socket.join(data);
-    console.log("user joined room " + data);
   });
-   
-  socket.on("send_message", (data) =>{
-   socket.to(data.roomId).emit("recieve_message", data)
-   console.log("recieving ");
-  })
+
+  socket.on("send_message", (data) => {
+    socket.to(data.roomId).emit("recieve_message", data);
+  });
+
+  socket.on("delete_message", (data) => {
+    socket.to(data.roomId).emit("delete", data);
+  });
 
   socket.on("disconnect", () => {
     console.log(`User Disconnected ${socket.id}`);

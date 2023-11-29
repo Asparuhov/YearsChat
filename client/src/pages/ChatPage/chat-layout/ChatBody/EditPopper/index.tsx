@@ -28,7 +28,8 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
   message,
 }) => {
   const [currentView, setCurrentView] = useState<ViewTypes>("default");
-  const { messageList, setMessageList } = useMessageContext();
+  const { setMessageList, socket } = useMessageContext();
+  const roomId = localStorage.getItem("roomId");
 
   const switchView = (type: ViewTypes) => {
     setCurrentView(type);
@@ -41,19 +42,26 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
     }, 200);
   };
 
-  const deleteMessage = () => {
-    const messageIndex = messageList.findIndex((msg) => msg.id === messageId);
+  const deleteMessage = async () => {
+    await socket.emit("delete_message", { messageId, roomId });
 
-    if (messageIndex !== -1) {
-      const updatedMessageList = [
-        ...messageList.slice(0, messageIndex),
-        ...messageList.slice(messageIndex + 1),
-      ];
+    setMessageList((prevMessageList) => {
+      const messageIndex = prevMessageList.findIndex(
+        (msg) => msg.id === messageId
+      );
 
-      setMessageList(updatedMessageList);
+      if (messageIndex !== -1) {
+        const updatedMessageList = [
+          ...prevMessageList.slice(0, messageIndex),
+          ...prevMessageList.slice(messageIndex + 1),
+        ];
+        return updatedMessageList;
+      } else {
+        return prevMessageList;
+      }
+    });
 
-      handlePopoverClose();
-    }
+    handlePopoverClose();
   };
 
   const renderContent = () => {
@@ -80,7 +88,6 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  console.log("Edit clicked");
                   handlePopoverClose();
                 }}
                 sx={{ width: "calc(50% - 4px)" }}

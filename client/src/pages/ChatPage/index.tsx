@@ -35,9 +35,30 @@ export const ChatPage: React.FC<IChatPageProps> = ({ username, roomId }) => {
     }
   };
 
+  const deleteMessage = (messageId: string) => {
+    setMessageList((prevMessageList) => {
+      const messageIndex = prevMessageList.findIndex(
+        (msg) => msg.id === messageId
+      );
+
+      if (messageIndex !== -1) {
+        const updatedMessageList = [
+          ...prevMessageList.slice(0, messageIndex),
+          ...prevMessageList.slice(messageIndex + 1),
+        ];
+        return updatedMessageList;
+      } else {
+        return prevMessageList;
+      }
+    });
+  };
+
   useEffect(() => {
     socket.on("recieve_message", (data) => {
       setMessageList((list) => [...list, data]);
+    });
+    socket.on("delete", (data) => {
+      deleteMessage(data.messageId);
     });
   }, [socket, setMessageList]);
 
