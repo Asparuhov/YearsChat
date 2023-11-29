@@ -13,6 +13,7 @@ npm install
 This will install the necessary dependencies for both the server and client.
 
 **Running Locally**
+
 Open different browsers with varying caching (normal, incognito windows, etc.).
 Start the server:
 ```
@@ -26,6 +27,7 @@ cd client
 npm start
 ```
 **Usage**
+
 1. Open the frontend in a browser.
 2. Enter your name and the room ID you want to join.
 3. Users who want to chat with each other need to join the same room.
