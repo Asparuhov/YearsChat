@@ -66,6 +66,7 @@ const StyledBox = styled(Box)({
   border: "2px solid blue",
   borderRadius: "7px",
   margin: "0 auto",
+  marginTop: 10,
   ".MuiTextField-root": {
     margin: "15px 0",
   },
