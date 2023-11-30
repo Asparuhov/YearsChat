@@ -37,6 +37,7 @@ npm start
 7. Edit form has validation (edited message must be different and not empty).
 8. Login form has validators (name <= 10 characters, room ID <= 5 characters).
 9. You can send messages by clicking the Enter button (just like the real chat apps)
+10. Last but not least, you can choose from Dark and Light mode in the chat view
 
 **Technologies Used**
 Frontend:
