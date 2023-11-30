@@ -1,20 +1,16 @@
 import React from "react";
 import { Grid, Switch, Typography, styled } from "@mui/material";
-import { useChatContext } from "../../../../contexts/chat/ChatContext";
 import { useThemeContext } from "../../../../contexts/theme/ThemeContextProvider";
 interface IProps {
   roomId: string;
 }
 
 export const ChatHeader: React.FC<IProps> = ({ roomId }) => {
-  const { setUserJoin, setMessageList } = useChatContext();
-
   const { mode, toggleColorMode, theme } = useThemeContext();
 
   const logoutUser = () => {
     localStorage.clear();
-    setMessageList([]);
-    setUserJoin(false);
+    window.location.reload();
   };
 
   return (
