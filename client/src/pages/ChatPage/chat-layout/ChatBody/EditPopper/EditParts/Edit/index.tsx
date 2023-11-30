@@ -26,6 +26,7 @@ export const Edit: React.FC<IEditProps> = ({
         label="Edit Message"
         variant="outlined"
         fullWidth
+        focused={false}
         value={editValue}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
           handleEditInputChange(event)
