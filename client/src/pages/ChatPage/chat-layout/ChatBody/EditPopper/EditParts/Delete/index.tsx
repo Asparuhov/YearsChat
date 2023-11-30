@@ -1,5 +1,5 @@
 import { Box, Button, Typography } from "@mui/material";
-import { useChatContext } from "../../../../../../../ChatContext";
+import { useChatContext } from "../../../../../../../contexts/chat/ChatContext";
 import React from "react";
 
 interface IDeleteProps {

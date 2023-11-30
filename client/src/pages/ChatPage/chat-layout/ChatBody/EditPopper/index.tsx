@@ -1,5 +1,5 @@
-import { Button, Paper, Popover, styled } from "@mui/material";
-import { useChatContext } from "../../../../../ChatContext";
+import { Paper, Popover } from "@mui/material";
+import { useChatContext } from "../../../../../contexts/chat/ChatContext";
 import React, { useEffect, useState } from "react";
 import { Main } from "./EditParts/Main";
 import { Edit } from "./EditParts/Edit";
@@ -137,8 +137,3 @@ export const EditPopper: React.FC<IEditPopperProps> = ({
     </Popover>
   );
 };
-
-const StyledButton = styled(Button)({
-  marginTop: 10,
-  width: 100,
-});

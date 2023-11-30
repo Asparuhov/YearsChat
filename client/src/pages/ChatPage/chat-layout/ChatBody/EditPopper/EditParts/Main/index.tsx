@@ -1,5 +1,5 @@
 import { Box, Button, styled } from "@mui/material";
-import { useChatContext } from "../../../../../../../ChatContext";
+import { useChatContext } from "../../../../../../../contexts/chat/ChatContext";
 
 export const Main = () => {
   const { setView } = useChatContext();

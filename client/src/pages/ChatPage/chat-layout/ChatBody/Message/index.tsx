@@ -2,6 +2,7 @@ import { Box, Typography, styled } from "@mui/material";
 import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import { EditPopper } from "../EditPopper";
+import { useThemeContext } from "../../../../../contexts/theme/ThemeContextProvider";
 
 interface IMessageProps {
   id: string;
@@ -20,6 +21,7 @@ export const Message: React.FC<IMessageProps> = ({
 }) => {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const { theme } = useThemeContext();
 
   const handleEditIconClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setPopoverOpen(true);
@@ -45,7 +47,10 @@ export const Message: React.FC<IMessageProps> = ({
       </Typography>
       <StyledMessage
         sx={{
-          backgroundColor: sender === "friend" ? "#daa520" : "#1565c0",
+          backgroundColor:
+            sender === "friend"
+              ? theme.palette.text.secondary
+              : theme.palette.text.primary,
           alignSelf: sender === "friend" ? "flex-start" : "flex-end",
           wordWrap: "break-word",
           wordBreak: "break-all",

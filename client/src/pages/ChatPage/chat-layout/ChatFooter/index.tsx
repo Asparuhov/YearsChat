@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, Grid, TextField, styled } from "@mui/material";
+import { useThemeContext } from "../../../../contexts/theme/ThemeContextProvider";
 
 interface IChatFooterProps {
   sendMessage: (message: string) => void;
@@ -7,6 +8,7 @@ interface IChatFooterProps {
 
 export const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
   const [currentMessage, setCurrentMessage] = useState<string>("");
+  const { theme } = useThemeContext();
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === "Enter") {
@@ -25,7 +27,11 @@ export const ChatFooter: React.FC<IChatFooterProps> = ({ sendMessage }) => {
       />
       <Button
         variant="contained"
-        sx={{ width: 75, height: 55 }}
+        sx={{
+          width: 75,
+          height: 55,
+          backgroundColor: theme.palette.primary.main,
+        }}
         onClick={() => {
           sendMessage(currentMessage);
           setCurrentMessage("");

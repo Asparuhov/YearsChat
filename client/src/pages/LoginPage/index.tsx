@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Button, TextField, Typography, styled } from "@mui/material";
-import { useChatContext } from "../../ChatContext";
+import { useChatContext } from "../../contexts/chat/ChatContext";
 
 type InputEvent = React.ChangeEvent<HTMLInputElement>;
 

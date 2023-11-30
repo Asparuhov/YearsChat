@@ -5,8 +5,8 @@ import { ChatBody } from "./chat-layout/ChatBody";
 import { ChatFooter } from "./chat-layout/ChatFooter";
 import { Message } from "./chat-layout/ChatBody/Message";
 import { v4 as uuidv4 } from "uuid";
-import { useChatContext } from "../../ChatContext";
-import { IMessageData } from "../../ChatContext";
+import { useChatContext } from "../../contexts/chat/ChatContext";
+import { IMessageData } from "../../contexts/chat/ChatContext";
 
 interface IChatPageProps {
   username: string;

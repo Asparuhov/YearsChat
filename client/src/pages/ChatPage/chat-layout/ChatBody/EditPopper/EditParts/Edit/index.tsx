@@ -1,5 +1,5 @@
-import { Box, Button, TextField, Typography, styled } from "@mui/material";
-import { useChatContext } from "../../../../../../../ChatContext";
+import { Box, Button, TextField, Typography } from "@mui/material";
+import { useChatContext } from "../../../../../../../contexts/chat/ChatContext";
 
 interface IEditProps {
   editValue: string;
@@ -66,8 +66,3 @@ export const Edit: React.FC<IEditProps> = ({
     </Box>
   );
 };
-
-const StyledButton = styled(Button)({
-  marginTop: 10,
-  width: 100,
-});

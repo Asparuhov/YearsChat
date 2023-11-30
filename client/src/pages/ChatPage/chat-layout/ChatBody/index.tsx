@@ -21,7 +21,7 @@ export const ChatBody: React.FC<IProps> = ({ children }) => {
   );
 };
 
-const StyledChatBody = styled(Grid)(({ theme }) => ({
+const StyledChatBody = styled(Grid)({
   height: 470,
   border: "1px solid rgb(133, 133, 133)",
   overflowY: "auto",
@@ -45,4 +45,4 @@ const StyledChatBody = styled(Grid)(({ theme }) => ({
   },
   scrollbarWidth: "thin",
   scrollbarColor: "#888 #f1f1f1",
-}));
+});
